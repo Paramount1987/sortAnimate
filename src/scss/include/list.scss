@@ -1,0 +1,31 @@
+@mixin translate3d ($x, $y, $z) {
+  -webkit-transform: translate3d($x, $y, $z);
+  transform: translate3d($x, $y, $z);
+}
+
+.unsorted-list{
+  display: block;
+  position: relative;
+  width: 50px;
+  margin: 10px auto;
+  list-style: none;
+}
+.unsorted-list li div{
+  position: absolute;
+  top: 0;
+  left:0;
+  transition: all 0.2s ease-out;
+  width: 50px;
+  height: 50px;
+  background:#336b87;
+  color: #fff;
+  text-align: center;
+  line-height: 50px;
+  font-size: 28px;
+}
+
+@for $i from 1 through 10 {
+  .unsorted-list li:nth-child( #{$i} ) div{
+    transform: translate(0, ($i - 1 ) * 52px);
+  }
+}
