@@ -1,25 +1,26 @@
 ;(function($){
 
-  var list = $('.unsorted-list');
+  var list = '.unsorted-list';
   var btnCreateList = '.btn-create-list';
   var btnSortList = '.btn-sort-list';
   var arrRandom = [];
+  var textSort = '.text-sort';
 //---------------------------------------
   function randomArr(){
-    var length = 3;
-    var arr = [8,6,6];
+    var length = 9;
+    var arr = [];
 
-    //for (var i = 0; i < length; i++){
-    //  var n = Math.random() * 10;
-    //  arr.push( Math.round(n) );
-    //}
+    for (var i = 0; i < length; i++){
+     var n = Math.random() * 10;
+     arr.push( Math.round(n) );
+    }
     return arr;
   }
 //-----------------------------------------
   function createList(arr, list){
-    list.empty();
+    $(list).empty();
     for (var i = 0; i < arr.length; i++){
-      list.append('<li data-num="' + arr[i] + i +'"><div>' + arr[i] + '</div></li>');
+      $(list).append('<li data-num="' + arr[i] +'">' + arr[i] + '</li>');
     }
   }
 //-----------------------------------------
@@ -39,42 +40,59 @@
   function sortList(arr){
     var tmp;
     var tmpY;
-    var tmpId;
-    var tmpIdNext;
-    for (var i = arr.length - 1, time = 0; i > 0; i--) {
+    startSorting();
+
+    for (var i = arr.length - 1, time = 1; i > 0; i--) {
       for (var j = 0; j < i; j++) {
-        setTimeout( showSort(j) ,  1000 * (++time) );
 
-        function showSort(j){
-          return function(){
-            if (arr[j] > arr[j+1]) {
-              tmp = arr[j];
-              tmpY = parseInt( $('.unsorted-list li[data-num="' + arr[j] + j +'"]').find('div').css('transform').split(',')[5] );
-              tmpId = $('.unsorted-list li[data-num="' + arr[j] + j +'"]').data('num');
-              tmpIdNext = $('.unsorted-list li[data-num="' + arr[j+1] + ( j + 1 ) +'"]').data('num');
+          setTimeout( showSort(j, i) ,  400 * (++time) );
+            
+          function showSort(j, i){
+            return function(){
 
+              $(list + ' li').eq(j).addClass('active');
 
+              if (arr[j] > arr[j+1]) {
 
+                  tmp = arr[j];
+                  tmpY = parseInt( $(list + ' li').eq(j).css('transform').split(',')[5] );
 
-              $('.unsorted-list li[data-num="' + arr[j] + j +'"]').find('div').css('transform', 'translate(0,' + parseInt( $('.unsorted-list li[data-num="' + arr[j+1] + (j+1) +'"]').find('div').css('transform').split(',')[5])  + 'px)');
-              arr[j] = arr[j+1];
+                  $(list + ' li').eq(j).css('transform', 'translate(0,' + parseInt( $(list + ' li').eq(j+1).css('transform').split(',')[5])  + 'px)');
+                  arr[j] = arr[j+1];
 
-              $('.unsorted-list li[data-num="' + arr[j+1] + (j+1) +'"]').find('div').css('transform', 'translate(0,' + tmpY + 'px)');
-              arr[j+1] = tmp;
+                  $(list + ' li').eq(j+1).css('transform', 'translate(0,' + tmpY + 'px)');
+                  arr[j+1] = tmp;
 
-              $ ('.unsorted-list li[data-num="' + tmpId +'"]').attr('data-num',  tmpIdNext);
-              $('.unsorted-list li[data-num="' + tmpIdNext +'"]').attr('data-num', tmpId );
-              console.log(tmpId,tmpIdNext);
+                  setTimeout(callbackInsert(j), 300);
 
+                  function callbackInsert(j){
+                    return function(){
+                      $(list + ' li').eq(j).insertAfter( $(list + ' li').eq(j+1) );
+                    }
+                        
+                  } 
+              }
+
+              setTimeout(function(){ $(list + ' li.active').removeClass('active'); }, 300);
+
+              if ( i == 1) {endSorting();}
             }
           }
-        }
       }
     }
-
-
-
   }
+//--------------------------------------
+function startSorting(){
+  $(textSort).text('list sorting...');
+  $(btnCreateList).prop('disabled', true); 
+  $(btnSortList).prop('disabled', true); 
+}
+
+function endSorting(){
+  $(textSort).text('list sorting ended');
+  $(btnCreateList).prop('disabled', false); 
+  $(btnSortList).prop('disabled', false); 
+}
 //---------------------------------------
   showList(btnCreateList);
   showSortList(btnSortList)
