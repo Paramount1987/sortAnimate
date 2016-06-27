@@ -13,16 +13,28 @@
             <div class="container">
                 <div class="row">
                     <h1>Sort Animate</h1>
+                    <p>Визуальная сортировка методом пузырька.<br>
+                       Для генерации данных - нажмите кнопку 'Create list'.<br>
+                       Для визуализации сортировка нажмите кнопку 'Sort list'.
+                    </p>
                 </div>
             </div>
         </header>
         <main>
             <div class="container">
                 <div class="row">
-                    <button class="btn btn-create-list">Create list</button>
-                    <button class="btn btn-sort-list">Sort list</button>
-                    <span class="text-sort"></span>
-                    <ol class="unsorted-list"></ol>
+                    <div class="col-md-6">
+                        <button class="btn btn-create-list">Create list</button>
+                        <button class="btn btn-sort-list" disabled>Sort list</button>
+                        <div class="sort-info">
+                            <div class="sort-info__before"></div>
+                            <div class="sort-info__after"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="text-sort"></span>
+                        <ol class="unsorted-list"></ol>
+                    </div>
                 </div>
             </div>
         </main>
