@@ -10,6 +10,11 @@
   margin: 10px;
   list-style: none;
   text-align: center;
+  transition: all 0.25s ease-out;
+  @include opacity(0);
+  &.in{
+    @include opacity(1);
+  }
 }
 .unsorted-list li{
   position: absolute;
